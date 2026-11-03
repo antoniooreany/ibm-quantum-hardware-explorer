@@ -5,6 +5,7 @@ from qiskit_ibm_runtime import QiskitRuntimeService, SamplerV2 as Sampler
 from qiskit.transpiler.preset_passmanagers import generate_preset_pass_manager
 from qiskit.visualization import plot_histogram, plot_distribution
 import sys
+import datetime
 
 def main():
     from run_demo_env import get_token
@@ -49,25 +50,32 @@ def main():
         print(f' |{bits}⟩ : {cnt} ({pct:.2f}%)')
 
     # Plotting & saving
+    # Ensure output directory exists
+    os.makedirs('outputs', exist_ok=True)
+    ts = datetime.datetime.now().strftime('%Y%m%d_%H%M%S')
+
     plt.figure(figsize=(8,5))
     plot_histogram(counts, title=f'Results on {backend.name}')
-    plt.savefig('histogram.png')
+    hist_path = os.path.join('outputs', f'histogram_{ts}.png')
+    plt.savefig(hist_path)
     plt.close()
 
     plt.figure(figsize=(8,5))
     plot_distribution(counts, title='Probability distribution')
-    plt.savefig('distribution.png')
+    dist_path = os.path.join('outputs', f'distribution_{ts}.png')
+    plt.savefig(dist_path)
     plt.close()
 
     states = list(counts.keys())
     values = list(counts.values())
     plt.figure(figsize=(6,6))
     plt.pie(values, labels=[f'|{s}⟩' for s in states], autopct='%1.1f%%', startangle=140)
+    pie_path = os.path.join('outputs', f'pie_chart_{ts}.png')
     plt.title(f'Outcome fractions on {backend.name}')
-    plt.savefig('pie_chart.png')
+    plt.savefig(pie_path)
     plt.close()
 
-    print('Plots saved: histogram.png, distribution.png, pie_chart.png')
+    print(f'Plots saved: {hist_path}, {dist_path}, {pie_path}')
 
 if __name__ == '__main__':
     main()
