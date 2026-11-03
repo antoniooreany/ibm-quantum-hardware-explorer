@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Jupyter
+.ipynb_checkpoints
+
+# Environment
+.env
+.env.*
+
+# Virtual environment
+.venv/
+
+# VS Code
+.vscode/
+
+# Build artifacts
+build/
+Dist/
+
+# IDE
+.idea/
